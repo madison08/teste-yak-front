@@ -1,21 +1,13 @@
 <template>
     <div>
-
-
-        <h1>Hello guy</h1>
-
+        page introuvable
     </div>
 </template>
 <script>
     export default{
-        name: 'home'
+        name: 'notFound'
     }
 </script>
-
 <style>
-
-    body{
-        background-color: red;
-    }
 
 </style>
