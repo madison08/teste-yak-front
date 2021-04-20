@@ -1,9 +1,22 @@
 <template>
-    <div>
+    <div id="wrapper">
 
         <Header/>
 
+        <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- <div class="row"> -->
+
             <router-view/>
+
+                        <!-- </div> -->
+                    </div>
+                </div>
+        </div>
 
         <Footer/>
 

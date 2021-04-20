@@ -1,9 +1,16 @@
 <template>
-    <footer>
 
-        <p>this is our footer</p>
+    <footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                2021 &copy; <a href="">JKP-DEV</a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- end Footer -->
 
-    </footer>
 </template>
 <script>
     export default{
