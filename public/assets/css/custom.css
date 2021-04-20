@@ -22,3 +22,10 @@
 #sidebar-menu>ul>li>a.router-link-exact-active, #sidebar-menu>ul>li>a.router-link{
     color: #71b6f9;
 }
+
+input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus {
+    outline: none;
+}

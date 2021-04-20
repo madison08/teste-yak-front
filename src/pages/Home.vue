@@ -212,9 +212,9 @@
                                     <div class="widget-chart-1">
                                         <!-- <div class="widget-chart-box-1 float-left" dir="ltr">
                                             <input data-plugin="knob" data-width="80" data-height="80" data-fgColor="#f05050 "
-                                                   data-bgColor="#F9B9B9" value="58"
-                                                   data-skin="tron" data-angleOffset="180" data-readOnly=true
-                                                   data-thickness=".15"/>
+                                                data-bgColor="#F9B9B9" value="58"
+                                                data-skin="tron" data-angleOffset="180" data-readOnly=true
+                                                data-thickness=".15"/>
                                         </div> -->
 
                                         <div class="widget-detail-1 text-right">
@@ -242,8 +242,8 @@
 <script>
 
 export default {
-  name: 'Home',
-  components: {
-  }
+    name: 'Home',
+    components: {
+    }
 }
 </script>
