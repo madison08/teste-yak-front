@@ -30,7 +30,7 @@
                         <td>02-05-2020 -- 07-07-2020 </td>
                         <td>255</td>
                         <td>admin</td>
-                        <td><div class="myBtn">editer</div> <div class="myBtn bg-success">voir</div></td>
+                        <td><div class="myBtn bg-success">voir</div></td>
                         </tr>
                         <tr>
                         <th scope="row">Pintade</th>
@@ -38,7 +38,7 @@
                         <td>02-05-2020 -- 07-07-2020</td>
                         <td>387</td>
                         <td>admin</td>
-                        <td><div class="myBtn">editer</div> <div class="myBtn bg-success">voir</div></td>
+                        <td><div class="myBtn bg-success">voir</div></td>
                         </tr>
                         <tr>
                         <th scope="row">Africain</th>
@@ -46,7 +46,7 @@
                         <td>02-05-2020 -- 07-07-2020</td>
                         <td>635</td>
                         <td>admin</td>
-                        <td><div class="myBtn">editer</div> <div class="myBtn bg-success">voir</div></td>
+                        <td><div class="myBtn bg-success">voir</div></td>
                         </tr>
                     </tbody>
                     </table>
