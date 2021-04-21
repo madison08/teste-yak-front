@@ -12,6 +12,19 @@
                     <option value="Trie">Trier par</option>
                 </select> -->
 
+                <form action="" class="mb-3">
+
+                        <!-- <div class="sortByBox"> -->
+                            <select name="" class="sortBy">
+                                <option value="Tri">Trier par</option>
+                                <option value="Tri">First</option>
+                                <option value="Tri">Two</option>
+                                <option value="Tri">Second</option>
+                            </select>
+                        <!-- </div> -->
+
+                    </form>
+
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
