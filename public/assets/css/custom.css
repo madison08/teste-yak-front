@@ -19,7 +19,7 @@
     font-weight: 700;
 }
 
-#sidebar-menu>ul>li>a.router-link-exact-active, #sidebar-menu>ul>li>a.router-link{
+#sidebar-menu>ul>li>a.router-link-exact-active, #sidebar-menu>ul>li>a.router-link-active{
     color: #71b6f9;
 }
 
