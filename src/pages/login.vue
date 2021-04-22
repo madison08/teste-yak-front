@@ -19,16 +19,16 @@
                                     <h4 class="text-uppercase mt-0">Se connecter</h4>
                                 </div>
 
-                                <form action="#">
+                                <form action="#" @submit.prevent="login">
 
                                     <div class="form-group mb-3">
                                         <label for="username">Nom d'utilisateur</label>
-                                        <input class="form-control" type="text" id="username" required="" placeholder="Nom d'utilisateur">
+                                        <input v-model="username" class="form-control" type="text" id="username" required="" placeholder="Nom d'utilisateur">
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="password">Mot de passe</label>
-                                        <input class="form-control" type="password" required="" id="password" placeholder="Mot de passe">
+                                        <input v-model="password" class="form-control" type="password" required="" id="password" placeholder="Mot de passe">
                                     </div>
 
                                     <!-- <div class="form-group mb-3">
@@ -61,11 +61,57 @@
     </div>
 </template>
 <script>
+import gql from 'graphql-tag'
+import { onLogin } from '../vue-apollo.js'
     export default{
-        name: 'login'
+        name: 'login',
+
+        data(){
+            return{
+                username: '',
+                password: ''
+            }
+        },
+
+        methods: {
+            login(){
+                this.$apollo.mutate({
+                    mutation: gql `
+                        mutation ($username: String!, $password: String!) {
+                            signIn(input: { username: $username, password: $password }) {
+                                error
+                                success
+                                token
+                                message
+                                user{
+                                    username
+                                }
+                            }
+                        }
+                    ` ,
+
+                    variables: {
+                        username: this.username,
+                        password: this.password 
+                    }
+                }).then((data) => {
+                    console.log(data)
+                    // console.log(data.data.signIn.token)
+                    onLogin(this.$apollo.provider.defaultClient, data.data.signIn.token, data.data.signIn.user.username)
+
+                    this.$router.push({ path: '/' })
+
+                    
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }
+        }
+
     }
 </script>
-<style>
+<style lang="scss">
+// @import '.' 
     body{
         background-image: url('../assets/fermeblur.jpg');
         background-size: cover;

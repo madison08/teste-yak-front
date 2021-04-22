@@ -1,8 +1,11 @@
+import { Auth } from '../middlewares/route'
+
 const routes = [
     {
         path: '/',
         redirect: '/admin',
         component: () => import('../layouts/Index.vue'),
+        beforeEnter: Auth.authIsRequire,
         children: [
             {
                 path: 'admin',
@@ -61,7 +64,14 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('../pages/login.vue')
+        component: () => import('../pages/login.vue'),
+        beforeEnter: (to, from, next) => {
+            if(Auth.isLogin()){
+                next({name: 'dashboard'})
+                return;
+            }
+            next()
+        }
     },
     {
         path: '/about',

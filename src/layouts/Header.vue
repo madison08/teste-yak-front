@@ -99,7 +99,12 @@
                         <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="assets/images/user.png" alt="user-image" class="rounded-circle">
                             <span class="pro-user-name ml-1">
-                                Admin <i class="mdi mdi-chevron-down"></i> 
+                             <!-- utilisateur connecter   -->
+                            <span v-for="user in users" :key="user.id">
+                                <span v-for="userSingle in user" :key="userSingle.name">
+                                    <span v-if="userSingle == userConnected">{{ userSingle }}</span>
+                                </span>
+                            </span> <i class="mdi mdi-chevron-down"></i> 
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -129,7 +134,7 @@
                             <div class="dropdown-divider"></div>
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <a href="#" @click.prevent="logout" class="dropdown-item notify-item">
                                 <i class="fe-log-out"></i>
                                 <span>Deconnexion</span>
                             </a>
@@ -322,8 +327,33 @@
     </div>
 </template>
 <script>
+import gql from 'graphql-tag'
+import { onLogout } from '@/vue-apollo.js'
     export default{
-        name: 'Header'
+        name: 'Header',
+
+        data(){
+            return{
+                // users: null
+                userConnected: localStorage.getItem('username')
+            }
+        },
+
+        apollo: {
+            users: gql `query{
+                users{
+                    username
+                }
+            }`
+        },
+
+        methods: {
+            logout(){
+                onLogout(this.$apollo.provider.defaultClient)
+                this.$router.push('/login')
+
+            },
+        }
     }
 </script>
 <style>
