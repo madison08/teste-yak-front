@@ -110,10 +110,10 @@ import { onLogin } from '../vue-apollo.js'
 
     }
 </script>
-<style lang="scss">
-// @import '.' 
-    body{
-        background-image: url('../assets/fermeblur.jpg');
-        background-size: cover;
-    }
+<style lang="scss" scoped>
+@import '../../public/login.scss' 
+    // body{
+    //     background-image: url('../assets/fermeblur.jpg');
+    //     background-size: cover;
+    // }
 </style>

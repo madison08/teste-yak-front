@@ -26,6 +26,12 @@ import gql from 'graphql-tag'
     export default{
         name: 'Reproducteur',
 
+        data(){
+            return{
+                users: ''
+            }
+        },
+
         apollo: {
             users: gql `query{
                 users{
@@ -34,6 +40,10 @@ import gql from 'graphql-tag'
                     password
                 }
             }`
+        },
+
+        mounted(){
+            console.log(this.users)
         }
     }
 
