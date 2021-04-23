@@ -14,4 +14,4 @@ const router = new VueRouter({
 
 // router.beforeEach(RouteMiddleware.setPageTitle)
 
-export default router
+export default router 
