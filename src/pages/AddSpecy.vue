@@ -160,7 +160,7 @@ import gql from 'graphql-tag'
             saveData(){
                 this.$apollo.mutate({
                     mutation: gql `
-                        mutation ($name: String!, $esperanceDeVie: Int!, $maturationTime: Int!, $incubationTime: Int!, $unitPrice: Int!, $monthlyProduction: Int!, $weeklyProduction: Int!, $perUnitProdutction: Int!, $reproductorLossPercentage: Float!, $adultLossPercentage: Float!, $childLossPercentage: Float!  ) {
+                        mutation createEspece ($name: String!, $esperanceDeVie: Int!, $maturationTime: Int!, $incubationTime: Int!, $unitPrice: Int!, $monthlyProduction: Int!, $weeklyProduction: Int!, $perUnitProdutction: Int!, $reproductorLossPercentage: Float!, $adultLossPercentage: Float!, $childLossPercentage: Float!  ) {
                             createEspece(input: { name: $name, esperanceDeVie: $esperanceDeVie, maturationTime: $maturationTime, incubationTime: $incubationTime, unitPrice: $unitPrice, monthlyProduction: $monthlyProduction, weeklyProduction: $weeklyProduction, perUnitProdutction: $perUnitProdutction, reproductorLossPercentage: $reproductorLossPercentage, adultLossPercentage: $adultLossPercentage, childLossPercentage: $childLossPercentage }) {
                                 id
                                 name
@@ -190,7 +190,13 @@ import gql from 'graphql-tag'
                         reproductorLossPercentage: this.formSpecy.reproductorLossPercentage,
                         adultLossPercentage: this.formSpecy.adultLossPercentage,
                         childLossPercentage: this.formSpecy.childLossPercentage
-                    }
+                    },
+
+                    // update: (store, {data: {}}) => {
+
+                    // }
+
+                    
                 }).then((data) => {
                     console.log(data)
 

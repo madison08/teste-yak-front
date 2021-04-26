@@ -28,8 +28,15 @@
 
                 <div class="separator"></div>
 
+                
 
-
+                <!-- {{ Especes }} hey -->
+                <div v-for="espece in Especes" :key="espece.id">
+                    <!-- {{espece}} -->
+                    <span v-for="SingleSpece in espece" :key="SingleSpece.id">
+                        {{ SingleSpece }}
+                    </span>
+                </div>
                 <div class="mt-3">
                     <table class="table">
                     <thead class="thead-dark">
@@ -72,8 +79,30 @@
     </div>
 </template>
 <script>
+import gql from 'graphql-tag'
     export default{
-        name: 'Specy'
+        name: 'Specy',
+
+        data(){
+            return{
+                Especes: '',
+                reloadNumber: 0
+
+            }
+        },
+
+        
+        apollo: {
+            Especes: gql `query{
+                Especes{
+                    id
+                    name
+                    esperanceDeVie
+                    maturationTime
+                }
+            }`
+
+        },
     }
 </script>
 <style>
