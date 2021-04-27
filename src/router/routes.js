@@ -39,6 +39,11 @@ const routes = [
                 component: () => import('../pages/AddSpecy.vue')
             },
             {
+                path: '/specy/:id/edit',
+                name: 'specy.edit',
+                component: () => import('../pages/EditSpecy.vue')
+            },
+            {
                 path: '/saisie',
                 name: 'saisie',
                 component: () => import('../pages/Saisies.vue')
