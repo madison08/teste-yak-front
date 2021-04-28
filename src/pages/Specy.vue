@@ -43,7 +43,7 @@
                         <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                     </div>
                     <tbody v-else>
-                        <tr v-for="espece in Especes" :key="espece.id">
+                        <tr v-for="espece in especes" :key="espece.id">
                             <!-- <span v-for="SingleSpece in espece" :key="SingleSpece.id"> -->
                         <th scope="row">{{ espece.name }}</th>
                         <td>{{ espece.monthlyProduction }}</td>
@@ -69,7 +69,7 @@
 <script>
 import gql from 'graphql-tag'
     const ALL_SPECY = gql `query{
-                Especes{
+                especes{
                     id
                     name
                     esperanceDeVie
@@ -84,7 +84,7 @@ import gql from 'graphql-tag'
 
         data(){
             return{
-                Especes: [],
+                especes: [],
                 reloadNumber: 0
 
             }
@@ -107,20 +107,22 @@ import gql from 'graphql-tag'
                 }).then((data) => {
                     console.log(data)
 
+                  this.$router.go()
+
+
                     // this.$router.push({ path: '/' })
                     // this.$router.push({ path: '/specy' })
                 }).catch((err) => {
                     console.log(err)
                 });
 
-                this.$router.go()
                 
             }
         
         },
         
         apollo: {
-            Especes: ALL_SPECY
+            especes: ALL_SPECY
 
             // fetchPolicy: 'cache-and-network',
 

@@ -29,7 +29,6 @@
 
                 <div class="separator"></div>
 
-
                 <div>
                     <table class="table">
                     <thead class="thead-dark">
@@ -42,14 +41,25 @@
                         <th scope="col">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                        <th scope="row">Admin</th>
-                        <td>Admin</td>
-                        <td>Admin</td>
-                        <td>Admin@gmail.com</td>
-                        <td>Admin</td>
-                        <td><div class="myBtn">editer</div> <div class="myBtn bg-danger">supprimer</div></td>
+                    <div v-if="$apollo.loading">
+                        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <tbody v-else>
+                        <tr v-for="user in users" :key="user.id">
+                            <!-- <span v-for="SingleSpece in espece" :key="SingleSpece.id"> -->
+                        <th scope="row">{{ user.firstname }}</th>
+                        <td>{{ user.lastname }}</td>
+                        <td> {{ user.username }} </td>
+                        <td>{{ user.email  }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>
+                            <div @click="$router.push({ name: 'specy.edit', params: { id: user.id } })" class="btn btn-primary">editer</div> <!--<div @click="deleteMutation(espece.id)" class="myBtn bg-danger">supprimer</div>-->
+                            <button @click="deleteMutation(user.id)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                Supprimer
+                            </button>
+
+                        </td>
+                            <!-- </span> -->
                         </tr>
                     </tbody>
                     </table>
@@ -62,7 +72,27 @@
     </div>
 </template>
 <script>
+import gql from 'graphql-tag'
     export default{
-        name: 'User'
+        name: 'User',
+
+        data(){
+            return{
+                users: ''
+            }
+        },
+
+        apollo: {
+            users: gql `query{
+                users{
+                    id
+                    username
+                    firstname
+                    lastname
+                    email
+                    role
+                }
+            }`
+        },
     }
 </script>

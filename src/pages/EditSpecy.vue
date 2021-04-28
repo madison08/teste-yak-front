@@ -6,7 +6,11 @@
             <div class="card-box">
                 <h3>Modifier l'espece {{ this.$route.params.id }} </h3>
 
-                <!-- <span v-for="espece in Especes" :key="espece.id"> -->
+                <!-- {{ especes }} -->
+
+                <!-- {{ receive(especes) }} -->
+
+                <!-- <span v-for="espece in especes" :key="espece.id"> -->
                     <!-- <span v-if="espece.id == idSingle"> {{ espece.name }}  -->
 
                 <form action="#" @submit.prevent="updateData" class="mt-3">
@@ -130,9 +134,9 @@
 
                 </form>
 
-                    <!-- </span>
+                    <!-- </span> -->
 
-                </span> -->
+                <!-- </span>  -->
 
 
             </div>
@@ -142,8 +146,8 @@
 </template>
 <script>
 import gql from 'graphql-tag'
-const ALL_SPECY = gql `query{
-                Especes{
+const ALL_SPECY = gql `query especes($id: ID!){
+                especes(id: $id){
                     id
                     name
                     esperanceDeVie
@@ -160,14 +164,16 @@ const ALL_SPECY = gql `query{
                     createdAt
                     monthlyProduction
                 },
-            }`;
+            }`
 
     export default{
-        name: 'AddSpecy',
+        name: 'UpdateSpecy',
+
+        
 
         data(){
             return{
-                Especes: [],
+                especes: [],
                 idSingle: this.$route.params.id,
                 formSpecy: {
                     name: '',
@@ -185,40 +191,121 @@ const ALL_SPECY = gql `query{
             }
         },
 
+
+        // computed:{
+        //     Esepeces(){
+        //         if(this.especes == undefined){
+        //             return  {}
+        //         }
+        //         return this.especes
+        //     }
+        // },
+
         async mounted(){
 
+            // receive(){
+            //     console.log(daata)
+
+            //     return daata;
+            // },
+
+            // this.receive.then(this.$nextTick).then(() => {
+            //     console.log(this.especes)
+            // })
+
+            // this.$nextTick(function () {
+            //     console.log(this.especes)
+
+            //     this.formSpecy.name = this.especes[0].name
+            //     this.formSpecy.esperanceDeVie = this.especes[0].esperanceDeVie
+            //     this.formSpecy.maturationTime = this.especes[0].maturationTime
+            //     this.formSpecy.incubationTime = this.especes[0].incubationTime
+            //     this.formSpecy.unitPrice = this.especes[0].unitPrice
+            //     this.formSpecy.monthlyProduction = this.especes[0].monthlyProduction
+            //     this.formSpecy.weeklyProduction = this.especes[0].weeklyProduction
+            //     this.formSpecy.perUnitProdutction = this.especes[0].perUnitProdutction
+            //     this.formSpecy.reproductorLossPercentage = this.especes[0].reproductorLossPercentage
+            //     this.formSpecy.adultLossPercentage = this.especes[0].adultLossPercentage
+            //     this.formSpecy.childLossPercentage = this.especes[0].childLossPercentage
+            // })
+
+
+
+
+            // console.log(this.receive)
+
+            // await console.log(this.especes)
+
+            // let $vm = this;
+
+            // console.log($vm.especes)
+
+
+            // this.$apollo.queries.tags.skip = true
+
+
+            // console.log(this.idSingle)
+
+            // console.log(this.especes[0])
+
             const queryData = await this.$apollo.query({
-                query: ALL_SPECY
+                query: gql `query especes($id: ID!){
+                especes(id: $id){
+                    id
+                    name
+                    esperanceDeVie
+                    maturationTime
+                    incubationTime
+                    unitPrice
+                    monthlyProduction
+                    weeklyProduction
+                    perUnitProdutction
+                    reproductorLossPercentage
+                    adultLossPercentage
+                    adultLossPercentage
+                    childLossPercentage
+                    createdAt
+                    monthlyProduction
+                },
+            }`,
+
+                variables:{
+                    // return{
+                        id: this.idSingle
+                    // }
+                }
             })
 
-            console.log(queryData)
 
-            for (const key in this.Especes) {
-                    if (Object.hasOwnProperty.call(this.Especes, key)) {
-                        const element = this.Especes[key];
 
-                        if(element.id == this.$route.params.id){
-                            console.log(element)
-                            this.formSpecy.name = element.name,
-                            this.formSpecy.esperanceDeVie = element.esperanceDeVie,
-                            this.formSpecy.maturationTime = element.maturationTime,
-                            this.formSpecy.incubationTime = element.incubationTime,
-                            this.formSpecy.unitPrice = element.unitPrice,
-                            this.formSpecy.monthlyProduction = element.monthlyProduction,
-                            this.formSpecy.weeklyProduction = element.weeklyProduction,
-                            this.formSpecy.perUnitProdutction = element.perUnitProdutction,
-                            this.formSpecy.reproductorLossPercentage = element.reproductorLossPercentage,
-                            this.formSpecy.adultLossPercentage = element.adultLossPercentage,
-                            this.formSpecy.childLossPercentage = element.childLossPercentage
-                        }
-                        
-                    }
-                }
+            console.log(queryData.data)
+
+            this.formSpecy.name = this.especes[0].name
+            this.formSpecy.esperanceDeVie = this.especes[0].esperanceDeVie
+            this.formSpecy.maturationTime = this.especes[0].maturationTime
+            this.formSpecy.incubationTime = this.especes[0].incubationTime
+            this.formSpecy.unitPrice = this.especes[0].unitPrice
+            this.formSpecy.monthlyProduction = this.especes[0].monthlyProduction
+            this.formSpecy.weeklyProduction = this.especes[0].weeklyProduction
+            this.formSpecy.perUnitProdutction = this.especes[0].perUnitProdutction
+            this.formSpecy.reproductorLossPercentage = this.especes[0].reproductorLossPercentage
+            this.formSpecy.adultLossPercentage = this.especes[0].adultLossPercentage
+            this.formSpecy.childLossPercentage = this.especes[0].childLossPercentage
         },
 
         
 
         methods: {
+
+
+
+
+            receive(daata){
+                // console.log(this.especes)
+                // console.log(daata)
+
+                return daata;
+            },
 
 
             updateData(){
@@ -272,10 +359,23 @@ const ALL_SPECY = gql `query{
             }
         },
 
-
         apollo: {
-            Especes: ALL_SPECY
+            especes: {
+                query: ALL_SPECY,
+            
+            variables(){
+                return{
+                    id: this.idSingle
+                }
+            }
+
+            }
+
+            
         },
+
+
+        
     }
 </script>
 <style>
