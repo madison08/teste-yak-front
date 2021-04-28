@@ -19,9 +19,9 @@ const routes = [
 
             },
             {
-                path: '/reproducteur',
-                name: 'reproducteur',
-                component: () => import('../pages/Reproducteur.vue')
+                path: '/step',
+                name: 'step',
+                component: () => import('../pages/Step.vue')
             },
             {
                 path: '/naissance',

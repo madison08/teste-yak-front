@@ -10,48 +10,48 @@
                 <form action="" @submit.prevent="saveData">
 
                     <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="">Nom</label>
-                        <input v-model="formUser.firstname" type="text" class="form-control" id="" placeholder="Nom">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="">Prenom</label>
-                        <input v-model="formUser.lastname" type="text" class="form-control" id="" placeholder="Nom">
-                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Nom</label>
+                            <input v-model="formUser.firstname" type="text" class="form-control" id="" placeholder="Nom">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Prenom</label>
+                            <input v-model="formUser.lastname" type="text" class="form-control" id="" placeholder="Nom">
+                        </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="">Pseudo</label>
-                        <input v-model="formUser.username" type="text" class="form-control" id="" placeholder="Pseudo">
-                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Pseudo</label>
+                            <input v-model="formUser.username" type="text" class="form-control" id="" placeholder="Pseudo">
+                        </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="">Email</label>
-                        <input v-model="formUser.email" type="email" class="form-control" id="" placeholder="Email">
-                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Email</label>
+                            <input v-model="formUser.email" type="email" class="form-control" id="" placeholder="Email">
+                        </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="">Phone</label>
-                        <input v-model="formUser.phone" type="text" class="form-control" id="" placeholder="phone">
-                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Phone</label>
+                            <input v-model="formUser.phone" type="text" class="form-control" id="" placeholder="phone">
+                        </div>
 
 
-                    <div class="form-group col-md-6">
-                        <label for="">Mot de passe</label>
-                        <input v-model="formUser.password" type="password" class="form-control" id="" placeholder="Mot de passe">
-                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Mot de passe</label>
+                            <input v-model="formUser.password" type="password" class="form-control" id="" placeholder="Mot de passe">
+                        </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="exampleFormControlSelect1">Role</label>
-                        <select v-model="formUser.role" class="form-control" id="exampleFormControlSelect1">
-                            <option value="ADMIN">Admin</option>
-                            <option value="USER">User</option>
-                            <option value="ROOT" >Super Admin</option>
-                        </select>
-                        {{formUser.role }}
-                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleFormControlSelect1">Role</label>
+                            <select v-model="formUser.role" class="form-control" id="exampleFormControlSelect1">
+                                <option value="ADMIN">Admin</option>
+                                <option value="USER">User</option>
+                                <option value="ROOT" >Super Admin</option>
+                            </select>
+                            {{formUser.role }}
+                        </div>
 
                     
-                </div>
+                    </div>
 
                     <button type="submit" class="btn btn-primary col-lg-12">S'ENREGISTRER</button>
 

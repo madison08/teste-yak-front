@@ -260,9 +260,9 @@
                             </li>
 
                             <li>
-                                <router-link :to="{name: 'reproducteur'}">
+                                <router-link :to="{name: 'step'}">
                                     <i class="mdi mdi-bookmark"></i>
-                                    <span>Reproducteur</span>
+                                    <span>Etapes</span>
                                 </router-link>
                             </li>
 
