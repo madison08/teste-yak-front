@@ -53,7 +53,7 @@
                         <td>{{ user.email  }}</td>
                         <td>{{ user.role }}</td>
                         <td>
-                            <div @click="$router.push({ name: 'specy.edit', params: { id: user.id } })" class="btn btn-primary">editer</div> <!--<div @click="deleteMutation(espece.id)" class="myBtn bg-danger">supprimer</div>-->
+                            <div @click="$router.push({ name: 'user.edit', params: { id: user.id } })" class="btn btn-primary">editer</div> <!--<div @click="deleteMutation(espece.id)" class="myBtn bg-danger">supprimer</div>-->
                             <button @click="deleteMutation(user.id)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
                                 Supprimer
                             </button>
@@ -73,12 +73,58 @@
 </template>
 <script>
 import gql from 'graphql-tag'
+const ALL_USER = gql `query{
+                users{
+                    id
+                    username
+                    firstname
+                    lastname
+                    email
+                    role
+                }
+            }`;
     export default{
         name: 'User',
 
         data(){
             return{
                 users: ''
+            }
+        },
+
+        methods: {
+            deleteMutation(idEn){
+                this.$apollo.mutate({
+                    mutation: gql `
+                        mutation ($id: ID!){
+                            deleteUser(id: $id)
+                        }
+                    ` ,
+
+                    variables: {
+                        id: idEn,
+                    },
+
+                    refetchQueries: [
+                        {
+                            query: ALL_USER
+                        }
+                    ]
+
+                    
+                }).then((data) => {
+                    console.log(data)
+
+                  // this.$router.go()
+
+
+                    // this.$router.push({ path: '/' })
+                    // this.$router.push({ path: '/specy' })
+                }).catch((err) => {
+                    console.log(err)
+                });
+
+                
             }
         },
 

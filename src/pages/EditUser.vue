@@ -5,9 +5,12 @@
         <div class="col-sm-12">
             <div class="card-box">
 
+                <h3>Modifier l'espece {{ this.$route.params.id }} </h3>
+
+
                 <h3>Ajouter un nouvel utilisateur</h3>
 
-                <form action="" @submit.prevent="saveData">
+                <form action="" @submit.prevent="updateData">
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -65,11 +68,24 @@
 </template>
 <script>
 import gql from 'graphql-tag'
+const EDIT_USER = gql `query users($id: ID!){
+                users(id: $id){
+                    id
+                    username
+                    firstname
+                    lastname
+                    email
+                    password
+                    status
+                    phone
+                },
+            }`
     export default{
-        name: 'AddUser',
+        name: 'EditUser',
 
         data(){
             return{
+                idSingle: this.$route.params.id,
                 formUser: {
                     firstname: '',
                     lastname: '',
@@ -82,35 +98,72 @@ import gql from 'graphql-tag'
             }
         },
 
+        async mounted(){
+
+            const queryData = await this.$apollo.query({
+                query: gql `query users($id: ID!){
+                users(id: $id){
+                    id
+                    username
+                    firstname
+                    lastname
+                    email
+                    password
+                    status
+                    phone
+                },
+            }`,
+
+                variables:{
+                    // return{
+                        id: this.idSingle
+                    // }
+                }
+            })
+
+            console.log(queryData)
+
+        },
+
+        apollo:{
+            query: EDIT_USER,
+
+            variables(){
+                return{
+                    id: this.idSingle
+                }
+            }
+        },
+
         methods: {
-            saveData(){
+            updateData(){
 
                 this.$apollo.mutate({
                     mutation: gql `
-                        mutation createUser ($firstname: String!, $lastname: String!, $username: String!, $email: String!, $phone: String!, $password: String!, $role: Role!) {
-                            createUser(input: { firstname: $firstname, lastname: $lastname, username: $username, email: $email, phone: $phone, password: $password, role: $role}) {
+                        mutation updateEspece ($id: ID!,$username: String!, $firstname: String!, $lastname: String!, $email: String!, $password: String!, $status: Boolean!, $phone: String!,$role: Role!) {
+                            updateEspece(id: $id,input: { name: $username, firstname: $firstname, lastname: $email, password: $password, status: $status}) {
                                 id
+                                username
                                 firstname
                                 lastname
-                                username
                                 email
-                                phone
                                 password
-                                role
+                                status
+                                phone
                             }
                         }
                     ` ,
 
                     variables: {
+                        id: this.idSingle,
+                        username: this.formUser.username,
                         firstname: this.formUser.firstname,
                         lastname: this.formUser.lastname,
-                        username: this.formUser.username,
                         email: this.formUser.email,
                         password: this.formUser.password,
-                        phone: this.formUser.phone,
-                        role: this.formUser.role
+                        status: this.formUser.status,
+                        phone: this.formUser.phone
                     },
-
 
                     
                 }).then((data) => {

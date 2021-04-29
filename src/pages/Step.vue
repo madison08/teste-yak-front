@@ -8,7 +8,7 @@
                 <h1 class="mb-3">Ajouter des etapes</h1>
 
             <fieldset>
-                <legend>bggg</legend>
+                <!-- <legend>bggg</legend> -->
                 <form @submit.prevent="saveData" action="">
 
                     <div class="form-row">
@@ -114,12 +114,28 @@ import gql from 'graphql-tag'
                         status: this.formSteps.status
                     },
 
+                    refetchQueries: [
+                        {
+                            query: gql `
+                                query{
+                                    steps{
+                                    id
+                                    name
+                                    status
+                                    }
+                                    
+                                }
+                            `
+                        }
+                    ]
+
 
                     
                 }).then((data) => {
                     console.log(data)
 
-                    this.$router.go()
+                    this.formSteps.name = ''
+
 
                     
                 }).catch((err) => {
@@ -141,11 +157,28 @@ import gql from 'graphql-tag'
                         id: idEn,
                     },
 
+                    refetchQueries: [
+                        {
+                            query: gql `
+                                query{
+                                    steps{
+                                    id
+                                    name
+                                    status
+                                    }
+                                    
+                                }
+                            `
+                        }
+                    ]
+
+                    // fetchPolicy: 'cache-and-network'
+
                     
                 }).then((data) => {
                     console.log(data)
 
-                    this.$router.go()
+                    // this.$router.go()
 
 
                     // this.$router.push({ path: '/' })
@@ -169,6 +202,7 @@ import gql from 'graphql-tag'
                     
                 }
             `
+            
         },
 
 

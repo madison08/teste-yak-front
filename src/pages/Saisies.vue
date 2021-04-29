@@ -1,13 +1,23 @@
 <template>
     <div id="saisies">
 
-        <!-- <h1>Saisie</h1> -->
-
         <div class="col-sm-12">
             <div class="card-box">
 
-                <form action="" method="post" class="form">
+                <form @submit.prevent="saveData" action="" method="" class="form">
                     
+                    <!-- {{ steps }} -->
+
+                    <!-- {{ especes }} -->
+
+                    <!-- {{ newStep.data }} -->
+
+                    <!-- {{ stepName }}
+                    {{ stepID }}
+
+                    {{ maps }} -->
+
+                    <!-- {{ emptyTable }} -->
 
                     <div class="formTitle">
                         Renseigner les champs etape par etape
@@ -15,10 +25,15 @@
 
                     <p>Periode ou date :</p>
 
+                    <!-- <datetime format="YYYY-MM-DDTH:i:sZ" class="form-control w-full" @input="updateEffectiveDate" v-model="form.effectiveDate" disabled></datetime> -->
+
                     <div class="date-block">
                         Du <input v-model="formData.startDate" type="date" name="" id="start-date">
                         Au <input v-model="formData.endDate" type="date" name="" id="end-date">
                     </div>
+
+                    {{ formData.startDate }}
+                    {{ formData.endDate }}
 
                     <!-- <input v-if="startDate != ''" type="text" placeholder="operation"> -->
                     <transition name="fade">
@@ -29,13 +44,13 @@
 
 
 
-                        <select v-model="formData.selectOp" name="" id="" class="operation">
-                            <option v-for="(Operation, index) in formData.listOp" :key="index" :value="Operation">
-                                {{ Operation }}
+                        <select v-model="formData.selectStep" @change="onChangeStepValue" name="" id="" class="operation">
+                            <option v-for="step in steps" :key="step.id" :value="step.id" >
+                                {{ step.name }}
                             </option>
                         </select>
 
-                        <!-- {{ formData.selectOp  }} -->
+                        {{ formData.selectStep  }}
                     </div>
 
                     </transition>
@@ -44,15 +59,15 @@
 
                     <transition name="fade">
 
-                    <div v-if="formData.selectOp != 'Selectionner une operation' && formData.selectOp != '' && formData.startDate != '' && formData.endDate != ''" class="formItem">
+                    <div v-if="formData.selectStep != '' && formData.start != '' && formData.endDate != ''" class="formItem">
 
-                        <select v-model="formData.selectSpecy" name="" id="" class="espece">
-                            <option v-for="(Specy, indexSpecy) in formData.listSpecy" :key="indexSpecy" :value="Specy">
-                                {{ Specy }}
+                        <select v-model="formData.selectEspece" @change="onChangeSpecyValue" name="" id="" class="espece">
+                            <option v-for="espece in especes" :key="espece.id" :value="espece.id">
+                                {{ espece.name }}
                             </option>
                         </select>
 
-                        <!-- {{ formData.selectSpecy  }} -->
+                        {{ formData.selectEspece  }}
                     </div>
 
                     </transition>
@@ -61,29 +76,16 @@
 
                     <transition name="fade">
 
-                            <fieldset v-if="formData.selectSpecy != 'Selectionner une espece'" class="fieldsetForm mt-2">
-                                <div v-if="formData.selectSpecy != 'Selectionner une espece' && formData.selectOp == 'Eclosions'" class="formItem">
+                            <fieldset v-if="formData.selectEspece !== ''" class="fieldsetForm mt-2">
+
+                                <div v-if="formData.selectEspece !== '' && this.nameStepCurrent == 'Ramassage'" class="formItem">
 
                                         <!-- <legend class="legendForm">Eclosion</legend> -->
-                                        <input type="number" placeholder="Quantiter" class="formQuantite">
-                                        <input type="number" placeholder="Quantiter" class="ml-3 formQuantite">
+                                        <input type="number" v-model="formData.quantity" placeholder="Quantiter" class="formQuantite">
 
                                 </div>
 
-                                <div v-if="formData.selectSpecy != 'Selectionner une espece' && formData.selectOp == 'Oeufs en incubation'" class="formItem">
-
-                                        <!-- <legend class="legendForm">Eclosion</legend> -->
-                                        <input type="number" placeholder="Quantiter" class="formQuantite">
-
-                                </div>
-
-                                <div v-if="formData.selectSpecy != 'Selectionner une espece' && formData.selectOp == 'Oeufs ramasser'" class="formItem">
-
-                                        <input type="number" placeholder="Quantiter" class="formQuantite">
-
-                                </div>
-
-                                <button type="submit" class="btn btn-primary col-lg-12 mt-3">ENREGISTRER</button>
+                                <button v-if="formData.selectSpecy !== ''" type="submit" class="btn btn-primary col-lg-12 mt-3">ENREGISTRER</button>
                             </fieldset>
 
 
@@ -98,30 +100,243 @@
     </div>
 </template>
 <script>
+import gql from 'graphql-tag'
+import moment from 'moment'
+
     export default{
         name: 'saisies',
 
         data(){
             return{
+                // stepTest: STEP,
+                stepName: [],
+                stepID: [],
+                nameStepCurrent: '',
+                nameSpecyCurrent: '',
+                steps: [],
+                newStep:[],
+                newSpecy: [],
+                especes: [],
                 formData: {
+                    effectiveDate: '',
                     startDate: '',
                     endDate: '',
-                    selectOp: 'Selectionner une operation',
-                    listOp: [
-                        'Selectionner une operation',
-                        'Oeufs ramasser',
-                        'Oeufs en incubation',
-                        'Eclosions',
-                    ],
-                    selectSpecy: 'Selectionner une espece',
-                    listSpecy: [
-                        'Selectionner une espece',
-                        'Hybride',
-                        'Pintade'
-                    ]
+                    selectStep: '',
+                    selectEspece: '',
+                    quantity: ''
+
                 }
             }
-        }
+        },
+
+        async mounted(){
+
+
+            const queryData = await this.$apollo.query({
+                query: gql `
+                    query{
+                        steps{
+                        id
+                        name
+                        status
+                        }
+                        
+                    }
+                `,
+
+                // variables:{
+                //     // return{
+                //         id: this.idSingle
+                //     // }
+                // }
+            })
+
+            const queryDataSpecy = await this.$apollo.query({
+                query: gql `
+                    query{
+                        especes{
+                            id
+                            name
+                            esperanceDeVie
+                            maturationTime
+                            unitPrice
+                            createdAt
+                            monthlyProduction
+                        }
+                    }
+                `,
+
+                // variables:{
+                //     // return{
+                //         id: this.idSingle
+                //     // }
+                // }
+            })
+
+            // console.log(queryDataSpecy)
+
+            this.newSpecy = queryDataSpecy
+
+            console.log(this.newSpecy)
+
+            
+
+
+
+            // console.log(queryData.data)
+
+            this.newStep = queryData
+
+            // console.log(this.newStep)
+
+            
+
+//             for(let i = 0; i < this.newStep.data.steps.length; i++ ){
+//                 // this.emptyTable.push(this.newStep.data.steps[i].name)
+// // console.log(this.newStep.data.steps[i]["id"])
+// // let id = this.newStep.data.steps[i]["id"]
+
+//                 // console.log(this.newStep.data.steps[i])
+
+//                // for(var key in this.newStep.data.steps[i]){
+//                     // console.log(key , ' -- ' , this.newStep.data.steps[i][key] )
+
+//                     // this.map[key] = key
+
+//                     // this.stepID.push(this.newStep.data.steps[i]["id"])
+
+//                     // this.stepName.push(this.newStep.data.steps[i]["name"])
+
+//                     // this.maps[this.stepName[i]] = this.maps[this.stepID[i]] 
+// // this.maps = {
+// //     [id]: this.newStep.data.steps[i]["name"]
+
+//                     // this.maps.set(id, this.newStep.data.steps[i]["name"] )
+// // }
+//                    this.map[id] = this.newStep.data.steps[i]["name"]
+
+//                     console.log(this.maps)
+
+//                    // console.log(this.newStep.data.steps[i][key])
+
+//                     // for(){
+
+//                     // }
+
+//                     // this.emptyTable
+
+//                     // this.map.set(key, this.newStep.data.steps[i][key])
+
+
+//                // }
+
+//             }
+
+
+        },
+
+        methods: {
+
+            updateEffectiveDate (d) {
+                this.form.effectiveDate = moment(d).format('YYYY-MM-DDThh:mm:ss')+'Z'
+            },
+
+
+            onChangeStepValue(){
+                this.nameStepCurrent = (this.newStep.data.steps.find(item => item.id === this.formData.selectStep )).name
+
+                // this.nameStepCurrent = (this.newStep.data.steps.find(item => item.id === this.formData.selectStep )).name
+
+
+                console.log(this.nameStepCurrent)
+
+            },
+
+            onChangeSpecyValue(){
+                this.nameSpecyCurrent = (this.newSpecy.data.especes.find(item => item.id === this.formData.selectEspece )).name
+
+                console.log(this.nameSpecyCurrent)
+            },
+
+            saveData(){
+
+                //  let data = this.formData;
+
+                if(this.nameStepCurrent == 'Ramassage'){
+                    
+
+                    this.$apollo.mutate({
+                    mutation: gql `
+                        mutation createGroup ($startDate: Time!, $endDate: Time!, $step: ID!, $espece: ID!, $quantity: Int!, ) {
+                            createEspece(input: { startDate: $startDate, endDate: $endDate, step: $step, espece: $espece, quantity: $quantity }) {
+                                id
+                                startDate
+                                endDate
+                                quantity
+                            }
+                        }
+                    ` ,
+
+                    variables: {
+                        startDate: this.formData.startDate,
+                        endDate: this.formData.endDate,
+                        step: this.formData.selectStep,
+                        espece: this.formData.selectEspece,
+                        quantity: this.formData.quantity
+                    },
+
+                    
+                }).then((data) => {
+                    console.log(data)
+
+                    this.$router.push({ path: '/specy' })
+
+                    
+                }).catch((err) => {
+                    console.log(err)
+                });
+
+                }
+
+            }
+        },
+
+        // mounted(){
+        //     console.log(this.stepTest)
+        // },
+
+        apollo: {
+            steps: {
+                query: gql `
+                    query{
+                        steps{
+                        id
+                        name
+                        status
+                        }
+                        
+                    }
+            `,
+            },
+
+            especes:{
+                query: gql `
+                    query{
+                        especes{
+                            id
+                            name
+                            esperanceDeVie
+                            maturationTime
+                            unitPrice
+                            createdAt
+                            monthlyProduction
+                        }
+                    }
+                `
+            }
+
+
+        },
     }
 </script>
 <style lang="scss">

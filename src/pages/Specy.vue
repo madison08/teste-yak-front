@@ -103,11 +103,17 @@ import gql from 'graphql-tag'
                         id: idEn,
                     },
 
+                    refetchQueries: [
+                        {
+                            query: ALL_SPECY
+                        }
+                    ]
+
                     
                 }).then((data) => {
                     console.log(data)
 
-                  this.$router.go()
+                  // this.$router.go()
 
 
                     // this.$router.push({ path: '/' })
