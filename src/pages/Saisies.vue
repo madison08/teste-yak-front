@@ -25,11 +25,17 @@
 
                     <p>Periode ou date :</p>
 
-                    <!-- <datetime format="YYYY-MM-DDTH:i:sZ" class="form-control w-full" @input="updateEffectiveDate" v-model="form.effectiveDate" disabled></datetime> -->
+
 
                     <div class="date-block">
-                        Du <input v-model="formData.startDate" type="date" name="" id="start-date">
-                        Au <input v-model="formData.endDate" type="date" name="" id="end-date">
+                        Du <!-- <input v-model="formData.startDate" type="date" name="" id="start-date"> -->
+
+                    <datetime format="YYYY-MM-DDTH:i:sZ" class="form-control w-full" width="300px" @input="updateStartDate" v-model="formData.startDate" disabled></datetime>
+
+                        Au <!-- <input v-model="formData.endDate" type="date" name="" id="end-date"> -->
+
+                    <datetime format="YYYY-MM-DDTH:i:sZ" class="form-control w-full" width="300px" @input="updateEndDate" v-model="formData.endDate" disabled></datetime>
+
                     </div>
 
                     {{ formData.startDate }}
@@ -101,10 +107,15 @@
 </template>
 <script>
 import gql from 'graphql-tag'
+import datetime from 'vuejs-datetimepicker'
 import moment from 'moment'
 
     export default{
         name: 'saisies',
+
+        components:{
+            datetime
+        },
 
         data(){
             return{
@@ -118,7 +129,7 @@ import moment from 'moment'
                 newSpecy: [],
                 especes: [],
                 formData: {
-                    effectiveDate: '',
+                    // effectiveDate: null,
                     startDate: '',
                     endDate: '',
                     selectStep: '',
@@ -237,8 +248,12 @@ import moment from 'moment'
 
         methods: {
 
-            updateEffectiveDate (d) {
-                this.form.effectiveDate = moment(d).format('YYYY-MM-DDThh:mm:ss')+'Z'
+            updateStartDate (d) {
+                this.formData.startDate = moment(d).format('YYYY-MM-DDThh:mm:ss')+'Z'
+            },
+
+            updateEndDate (d) {
+                this.formData.endDate = moment(d).format('YYYY-MM-DDThh:mm:ss')+'Z'
             },
 
 
@@ -268,7 +283,7 @@ import moment from 'moment'
                     this.$apollo.mutate({
                     mutation: gql `
                         mutation createGroup ($startDate: Time!, $endDate: Time!, $step: ID!, $espece: ID!, $quantity: Int!, ) {
-                            createEspece(input: { startDate: $startDate, endDate: $endDate, step: $step, espece: $espece, quantity: $quantity }) {
+                            createGroup(input: { startDate: $startDate, endDate: $endDate, step: $step, espece: $espece, quantity: $quantity }) {
                                 id
                                 startDate
                                 endDate
@@ -288,8 +303,6 @@ import moment from 'moment'
                     
                 }).then((data) => {
                     console.log(data)
-
-                    this.$router.push({ path: '/specy' })
 
                     
                 }).catch((err) => {
